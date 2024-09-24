@@ -10,13 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 @RestController
@@ -38,9 +34,7 @@ public class ImageReciverController {
             @RequestParam(value = "rgb-remove", required = false) CustomColorRGB rgbRemoveColor,
             @PathVariable("processorType") String processorType) {
 
-            String fileType = (processorType.equals("color-remove")
-                                || processorType.equals("replace-background") || processorType.equals("normalizer"))
-                    ? "png" : "jpg";
+            String fileType = "png";
 
             ArrayList<MultipartFile> files = new ArrayList<>();
 

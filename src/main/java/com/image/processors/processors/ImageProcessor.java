@@ -1,13 +1,9 @@
 package com.image.processors.processors;
 
-
 import org.springframework.stereotype.Service;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 @Service
 public class ImageProcessor {
@@ -89,12 +85,13 @@ public class ImageProcessor {
         }
     }
 
-    public BufferedImage sumImages(BufferedImage firstImage, BufferedImage secondImage) {
+    public BufferedImage sumOrSubtractImages(BufferedImage firstImage, BufferedImage secondImage, String operationType) {
         BufferedImage zImage = new BufferedImage(firstImage.getWidth(), secondImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
         BufferedImage normalizedResult = null;
 
         int fMax = 0;
         int fMin = 255;
+        int rSum = 0;
 
         for(int row = 0; row < firstImage.getWidth(); row++) {
             for (int col = 0; col < firstImage.getHeight(); col++) {
@@ -103,7 +100,7 @@ public class ImageProcessor {
                 int secondPixel = secondImage.getRGB(row, col);
                 Color firstColor = new Color(firstPixel);
                 Color secondColor = new Color(secondPixel);
-                int rSum = (firstColor.getRed() + secondColor.getRed());
+                rSum = (firstColor.getRed() + secondColor.getRed());
 
                 if(rSum > fMax) { fMax = rSum; }
                 if(rSum < fMin) { fMin = rSum; }
@@ -116,10 +113,28 @@ public class ImageProcessor {
                 int secondPixel = secondImage.getRGB(row, col);
                 Color firstColor = new Color(firstPixel);
                 Color secondColor = new Color(secondPixel);
-                int f = firstColor.getRed() + secondColor.getRed();
+                int f = 0;
+
+                if (operationType.equals("sum")) {
+                    f = firstColor.getRed() + secondColor.getRed();
+                } else if (operationType.equals("sum")) {
+                    f = firstColor.getRed() - secondColor.getRed();
+                }
+                else if (operationType.equals("and")){
+                    f = firstColor.getRed() & secondColor.getRed();
+                } else if (operationType.equals("or")) {
+                    f = firstColor.getRed() | secondColor.getRed();
+                } else if (operationType.equals("xor")) {
+                    f = firstColor.getRed() ^ secondColor.getRed();
+                }
 
                 double factor = 255.0 / (fMax - fMin);
                 int g = (int) (factor * (f - fMin));
+                System.err.println(f);
+                System.err.println(g);
+                if(g < 0 ) {
+                    g = g*=-1;
+                }
 
                 zImage.setRGB(row, col, new Color(g,g,g).getRGB());
                 normalizedResult = zImage;

@@ -34,7 +34,8 @@ public class ImageProcessorTypeHelper {
             case "colorInverter" -> resultImage = processor.colorInverter(ImageIO.read(images.get(0).getInputStream()));
             case "color-remove" -> resultImage = processor.removeColorByThreshold(ImageIO.read(images.get(0).getInputStream()), (rgbRemoveColor.getR() + rgbRemoveColor.getG() + rgbRemoveColor.getB()) / 3);
             case "replace-background" -> resultImage = processor.replaceBackground(ImageIO.read(images.get(0).getInputStream()), ImageIO.read(images.get(1).getInputStream()), (rgbRemoveColor.getR() + rgbRemoveColor.getG() + rgbRemoveColor.getB()) / 3);
-            case "normalizer" -> resultImage = processor.sumImages(ImageIO.read(images.get(0).getInputStream()), ImageIO.read(images.get(1).getInputStream()));
+            case "sum" -> resultImage = processor.sumOrSubtractImages(ImageIO.read(images.get(0).getInputStream()), ImageIO.read(images.get(1).getInputStream()), processorType);
+            case "sub" -> resultImage = processor.sumOrSubtractImages(ImageIO.read(images.get(0).getInputStream()), ImageIO.read(images.get(1).getInputStream()), processorType);
         }
         return resultImage;
     }
