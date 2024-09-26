@@ -36,6 +36,7 @@ public class ImageProcessorTypeHelper {
             case "replace-background" -> resultImage = processor.replaceBackground(ImageIO.read(images.get(0).getInputStream()), ImageIO.read(images.get(1).getInputStream()), (rgbRemoveColor.getR() + rgbRemoveColor.getG() + rgbRemoveColor.getB()) / 3);
             case "sum" -> resultImage = processor.sumOrSubtractImages(ImageIO.read(images.get(0).getInputStream()), ImageIO.read(images.get(1).getInputStream()), processorType);
             case "sub" -> resultImage = processor.sumOrSubtractImages(ImageIO.read(images.get(0).getInputStream()), ImageIO.read(images.get(1).getInputStream()), processorType);
+            case "sharpen-border" -> resultImage = processor.applyFilter(ImageIO.read(images.get(0).getInputStream()));
         }
         return resultImage;
     }
